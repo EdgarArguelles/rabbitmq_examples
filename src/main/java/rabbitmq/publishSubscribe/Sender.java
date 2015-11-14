@@ -13,7 +13,6 @@ public class Sender extends Producer {
     public static void main(String[] args) {
         try {
             Producer producer = new Sender();
-            // each "." will delay a second, so the different consumers could share work while one is busy
             producer.send("message1", null);
             producer.send("message2", null);
             producer.send("message3", null);

@@ -18,6 +18,11 @@ Basic examples using RabbitMQ queues
       Deliver a message to multiple consumers. This pattern is known as "publish/subscribe", essentially,
       published log messages are going to be broadcast to all the receivers.
       (run two instance of Receiver and then run Sender to send messages to server)
+* routing (http://www.rabbitmq.com/tutorials/tutorial-four-java.html):
+      Make it possible to subscribe only to a subset of the messages. For example, we will be able to direct only
+      critical error messages to the log file (to save disk space), while still being able to print all
+      of the log messages on the console.
+      (run an instance of each Receivers and then run Sender to send messages to server)
 
 ### run
 $ gradle run
