@@ -16,14 +16,14 @@ public class ReceiverAtention extends Consumer {
         try {
             System.out.println("**************WARNING and ERROR MESSAGE*****************");
             Consumer consumer = new ReceiverAtention();
-            consumer.receive();
+            consumer.receive(new String[]{"warning", "error"});
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void receive() throws IOException {
+    public void receive(String[] routingKeys) throws IOException {
         // connect to server, create and get channel
         final Channel channel = openChannel();
 
@@ -39,8 +39,9 @@ public class ReceiverAtention extends Consumer {
 
         // Now we need to tell the exchange to send messages to our queue. A binding is a relationship between
         // an exchange and a queue. This can be simply read as: the queue is interested in messages from this exchange.
-        channel.queueBind(queueName, EXCHANGE_DIRECT_LOGS, "warning");
-        channel.queueBind(queueName, EXCHANGE_DIRECT_LOGS, "error");
+        for (String key : routingKeys) {
+            channel.queueBind(queueName, EXCHANGE_DIRECT_LOGS, key);
+        }
 
         System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 

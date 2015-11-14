@@ -19,9 +19,10 @@ public abstract class Consumer implements QueueManager {
     /**
      * receive a message form server
      *
+     * @param routingKeys routingKeys to subscribe to
      * @throws IOException
      */
-    public abstract void receive() throws IOException;
+    public abstract void receive(String[] routingKeys) throws IOException;
 
     @Override
     public Channel openChannel() throws IOException {
