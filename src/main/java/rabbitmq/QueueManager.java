@@ -15,6 +15,7 @@ public interface QueueManager {
     // Queues name
     String QUEUE_HELLO_WORLD = "helloWorld";
     String TASK_QUEUE_NAME = "task_queue";
+    String EXCHANGE_LOGS = "logs";
 
     /**
      * Create and get a communication channel to server
