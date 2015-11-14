@@ -1,4 +1,4 @@
-package rabbitmq.helloWorld;
+package rabbitmq.routing;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
@@ -9,28 +9,41 @@ import rabbitmq.Consumer;
 import java.io.IOException;
 
 /**
- * The receiver is pushed messages from RabbitMQ, so unlike the sender which publishes a single message,
- * we'll keep it running to listen for messages and print them out.
+ * abstract class that receives messages log
  */
-public class Receiver extends Consumer {
-    public static void main(String[] args) {
-        try {
-            Consumer consumer = new Receiver();
-            consumer.receive();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+public abstract class ReceiverLog extends Consumer {
+
+    private String[] routingKeys;
+
+    public ReceiverLog(String[] routingKeys) {
+        this.routingKeys = routingKeys;
     }
 
     @Override
     public void receive() throws IOException {
         // connect to server, create and get channel
-        Channel channel = openChannel();
+        final Channel channel = openChannel();
 
-        // Note that we declare the queue here, as well. Because we might start the receiver before the sender,
-        // we want to make sure the queue exists before we try to consume messages from it.
-        channel.queueDeclare(QUEUE_HELLO_WORLD, false, false, false, null);
+        // connect to exchange
+        channel.exchangeDeclare(EXCHANGE_DIRECT_LOGS, "direct");
+        // because we want to hear about all log messages, not just a subset of them. We're also interested only
+        // in currently flowing messages not in the old ones, for this we need to connect Rabbit with a fresh empty
+        // queue, for this each consumer will create its own temporal queue with a random name and when we disconnect
+        // the consumer the queue should be automatically deleted.
+        // so we're going to use channel.queueDeclare().getQueue() to create a non-durable, exclusive, auto delete
+        // queue with a generated name
+        String queueName = channel.queueDeclare().getQueue();
+
+        // Now we need to tell the exchange to send messages to our queue. A binding is a relationship between
+        // an exchange and a queue. This can be simply read as: the queue is interested in messages from this exchange.
+        for (String key : routingKeys) {
+            channel.queueBind(queueName, EXCHANGE_DIRECT_LOGS, key);
+        }
+
         System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
+
+        // because each consumer has its own queue we don't need to configure basicQos(1) to share the message one
+        // by one among consumers
 
         // DefaultConsumer is a class implementing the Consumer interface we'll use to buffer
         // the messages pushed to us by the server.
@@ -55,6 +68,6 @@ public class Receiver extends Consumer {
 
         // the second parameter "true" called "autoAck", tells server should consider messages acknowledged once delivered
         // that means once the message is delivered, the server will delete message from queue
-        channel.basicConsume(QUEUE_HELLO_WORLD, true, consumer);
+        channel.basicConsume(queueName, true, consumer);
     }
 }

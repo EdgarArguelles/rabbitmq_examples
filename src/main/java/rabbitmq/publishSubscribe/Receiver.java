@@ -15,14 +15,14 @@ public class Receiver extends Consumer {
     public static void main(String[] args) {
         try {
             Consumer consumer = new Receiver();
-            consumer.receive(null);
+            consumer.receive();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void receive(String[] routingKeys) throws IOException {
+    public void receive() throws IOException {
         // connect to server, create and get channel
         final Channel channel = openChannel();
 
