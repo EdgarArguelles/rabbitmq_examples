@@ -23,6 +23,10 @@ Basic examples using RabbitMQ queues
       critical error messages to the log file (to save disk space), while still being able to print all
       of the log messages on the console.
       (run an instance of each Receivers and then run Sender to send messages to server)
+* topic (http://www.rabbitmq.com/tutorials/tutorial-five-java.html):
+      Make it possible to subscribe only to a subset of the messages, but using different criteria like severity and
+      source
+      (run an instance of each Receivers and then run Sender to send messages to server)
 
 ### run
 $ gradle run

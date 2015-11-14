@@ -9,14 +9,14 @@ import java.io.IOException;
  */
 public class ReceiverAtention extends ReceiverLog {
 
-    public ReceiverAtention(String[] routingKeys) {
-        super(routingKeys);
+    public ReceiverAtention() {
+        super(new String[]{"warning", "error"});
     }
 
     public static void main(String[] args) {
         try {
             System.out.println("**************WARNING and ERROR MESSAGE*****************");
-            Consumer consumer = new ReceiverAtention(new String[]{"warning", "error"});
+            Consumer consumer = new ReceiverAtention();
             consumer.receive();
         } catch (IOException e) {
             e.printStackTrace();

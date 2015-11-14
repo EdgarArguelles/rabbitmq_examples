@@ -1,16 +1,18 @@
-package rabbitmq.routing;
+package rabbitmq.topic;
 
 import rabbitmq.Consumer;
 
 import java.io.IOException;
 
 /**
- * This consumer will receive all messages.
+ * This consumer will receive all animals messages.
  */
-public class ReceiverAll extends ReceiverLog {
+public class ReceiverAll extends ReceiverAnimal {
 
     public ReceiverAll() {
-        super(new String[]{"info", "warning", "error"});
+        // * (star) can substitute for exactly one word.
+        // # (hash) can substitute for zero or more words.
+        super(new String[]{"#"});
     }
 
     public static void main(String[] args) {

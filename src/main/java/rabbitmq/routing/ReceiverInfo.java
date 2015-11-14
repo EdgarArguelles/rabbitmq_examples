@@ -9,14 +9,14 @@ import java.io.IOException;
  */
 public class ReceiverInfo extends ReceiverLog {
 
-    public ReceiverInfo(String[] routingKeys) {
-        super(routingKeys);
+    public ReceiverInfo() {
+        super(new String[]{"info"});
     }
 
     public static void main(String[] args) {
         try {
             System.out.println("**************INFO MESSAGE*****************");
-            Consumer consumer = new ReceiverInfo(new String[]{"info"});
+            Consumer consumer = new ReceiverInfo();
             consumer.receive();
         } catch (IOException e) {
             e.printStackTrace();

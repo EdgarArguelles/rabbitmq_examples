@@ -9,7 +9,7 @@ import rabbitmq.Consumer;
 import java.io.IOException;
 
 /**
- * Different instances of ReceiverInfo will share work while one is busy
+ * Different instances of ReceiverRabbitOrLazy will share work while one is busy
  * we'll keep it running to listen for messages and print them out.
  */
 public class Receiver extends Consumer {
