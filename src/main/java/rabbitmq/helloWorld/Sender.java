@@ -13,25 +13,25 @@ public class Sender extends Producer {
     public static void main(String[] args) {
         try {
             Producer producer = new Sender();
-            producer.send("Hello World1!");
-            producer.send("Hello World2!");
-            producer.send("Hello World3!");
-            producer.send("Hello World4!");
-            producer.send("Hello World5!");
-            producer.send("Hello World6!");
-            producer.send("Hello World7!");
-            producer.send("Hello World8!");
-            producer.send("Hello World9!");
-            producer.send("Hello World10!");
-            producer.send("Hello World11!");
-            producer.send("Hello World12!");
+            producer.send("Hello World1!", null);
+            producer.send("Hello World2!", null);
+            producer.send("Hello World3!", null);
+            producer.send("Hello World4!", null);
+            producer.send("Hello World5!", null);
+            producer.send("Hello World6!", null);
+            producer.send("Hello World7!", null);
+            producer.send("Hello World8!", null);
+            producer.send("Hello World9!", null);
+            producer.send("Hello World10!", null);
+            producer.send("Hello World11!", null);
+            producer.send("Hello World12!", null);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void send(String message) throws IOException {
+    public void send(String message, String routingKey) throws IOException {
         // connect to server, create and get channel
         Channel channel = openChannel();
 

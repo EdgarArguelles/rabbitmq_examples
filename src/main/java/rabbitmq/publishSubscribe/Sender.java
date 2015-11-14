@@ -14,19 +14,19 @@ public class Sender extends Producer {
         try {
             Producer producer = new Sender();
             // each "." will delay a second, so the different consumers could share work while one is busy
-            producer.send("message1");
-            producer.send("message2");
-            producer.send("message3");
-            producer.send("message4");
-            producer.send("message5");
-            producer.send("message6");
+            producer.send("message1", null);
+            producer.send("message2", null);
+            producer.send("message3", null);
+            producer.send("message4", null);
+            producer.send("message5", null);
+            producer.send("message6", null);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void send(String message) throws IOException {
+    public void send(String message, String routingKey) throws IOException {
         // connect to server, create and get channel
         Channel channel = openChannel();
 

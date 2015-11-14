@@ -19,10 +19,11 @@ public abstract class Producer implements QueueManager {
     /**
      * Send a message to server
      *
-     * @param message message to queue to server
+     * @param message    message to queue to server
+     * @param routingKey key to route message
      * @throws IOException
      */
-    public abstract void send(String message) throws IOException;
+    public abstract void send(String message, String routingKey) throws IOException;
 
     @Override
     public Channel openChannel() throws IOException {

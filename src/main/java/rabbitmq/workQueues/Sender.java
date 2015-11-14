@@ -16,18 +16,18 @@ public class Sender extends Producer {
         try {
             Producer producer = new Sender();
             // each "." will delay a second, so the different consumers could share work while one is busy
-            producer.send("13.............");
-            producer.send("7.......");
-            producer.send("6......");
-            producer.send("3...");
-            producer.send("2..");
+            producer.send("13.............", null);
+            producer.send("7.......", null);
+            producer.send("6......", null);
+            producer.send("3...", null);
+            producer.send("2..", null);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void send(String message) throws IOException {
+    public void send(String message, String routingKey) throws IOException {
         // connect to server, create and get channel
         Channel channel = openChannel();
 
