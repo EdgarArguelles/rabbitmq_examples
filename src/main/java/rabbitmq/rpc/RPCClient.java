@@ -50,6 +50,8 @@ public class RPCClient {
             props.setCorrelationId(correlationId);
             props.setReplyTo(replyQueueName);
 
+            channel.queueDeclare(RPC_QUEUE_NAME, false, false, false, null);
+
             // publish client request to "rpc_queue" queue sending an unique correlationId and a replayTo queue
             channel.basicPublish("", RPC_QUEUE_NAME, props, message.getBytes("UTF-8"));
         }
