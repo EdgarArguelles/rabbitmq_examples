@@ -12,6 +12,7 @@ import java.io.IOException;
  * All consumers will receive logs emitted by Producer, in this case the messages won't be splitted among Consumers.
  */
 public class Receiver extends Consumer {
+
     public static void main(String[] args) {
         try {
             Consumer consumer = new Receiver();

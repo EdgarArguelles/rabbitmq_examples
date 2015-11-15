@@ -13,6 +13,7 @@ import java.io.IOException;
  * we'll keep it running to listen for messages and print them out.
  */
 public class Receiver extends Consumer {
+
     public static void main(String[] args) {
         try {
             Consumer consumer = new Receiver();
