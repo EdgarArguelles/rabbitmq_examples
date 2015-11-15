@@ -71,8 +71,9 @@ public class RPCClient {
         producer.send(message, null);
         System.out.println(" [x] Awaiting RPC response");
 
-        // this client could receive all responses for different request, so we need to create an infinite loop
-        // until receive respond for this request
+        // this client has its own queue (replyQueueName) but all requests use the same queue whit different
+        // correlationId, so this client could receive many different responses on the same queue, for this reason
+        // we need to create an infinite loop until receive the correct respond for this request
         while (true) {
             // sleep process flow until a response arrives
             QueueingConsumer.Delivery delivery = queueConsumer.nextDelivery();
