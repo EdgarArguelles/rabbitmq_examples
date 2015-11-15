@@ -8,6 +8,10 @@ import rabbitmq.Producer;
 
 import java.util.UUID;
 
+/**
+ * Class that simulate a server client, this server create a producer which send request to server on a specific queue
+ * and create a consumer which listen the request response
+ */
 public class RPCClient {
 
     private Consumer consumer;
