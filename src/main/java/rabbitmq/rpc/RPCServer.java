@@ -8,10 +8,15 @@ import rabbitmq.Producer;
 
 public class RPCServer {
 
-    private QueueingConsumer queueConsumer;
-    private QueueingConsumer.Delivery delivery;
+    private Consumer consumer;
 
     private class Receiver extends Consumer {
+
+        private QueueingConsumer queueConsumer;
+
+        public QueueingConsumer getQueueConsumer() {
+            return queueConsumer;
+        }
 
         @Override
         public void receive() throws Exception {
@@ -37,6 +42,12 @@ public class RPCServer {
     }
 
     private class Sender extends Producer {
+
+        private QueueingConsumer.Delivery delivery;
+
+        public Sender(QueueingConsumer.Delivery delivery) {
+            this.delivery = delivery;
+        }
 
         @Override
         public void send(String message, String routingKey) throws Exception {
@@ -68,8 +79,7 @@ public class RPCServer {
     }
 
     public void start() {
-        Consumer consumer = new Receiver();
-        Producer producer = new Sender();
+        consumer = new Receiver();
         try {
             // server will listen to rpc_queue queue for any client request
             consumer.receive();
@@ -77,9 +87,10 @@ public class RPCServer {
             // create an infinite loop to simulate a server always listening
             while (true) {
                 // sleep process flow until request arrives
-                delivery = queueConsumer.nextDelivery();
+                QueueingConsumer.Delivery delivery = ((Receiver) consumer).getQueueConsumer().nextDelivery();
 
                 // when a request arrive, process it an send response to replayTo queue
+                Producer producer = new Sender(delivery);
                 String response = null;
                 try {
                     // process request
@@ -102,7 +113,7 @@ public class RPCServer {
             e.printStackTrace();
         } finally {
             try {
-                producer.closeChannel();
+                consumer.closeChannel();
             } catch (Exception ignore) {
             }
         }

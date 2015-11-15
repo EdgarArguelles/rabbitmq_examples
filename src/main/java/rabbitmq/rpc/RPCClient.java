@@ -10,10 +10,20 @@ import java.util.UUID;
 
 public class RPCClient {
 
-    private String replyQueueName;
-    private QueueingConsumer queueConsumer;
+    private Consumer consumer;
 
     private class Receiver extends Consumer {
+
+        private String replyQueueName;
+        private QueueingConsumer queueConsumer;
+
+        public String getReplyQueueName() {
+            return replyQueueName;
+        }
+
+        public QueueingConsumer getQueueConsumer() {
+            return queueConsumer;
+        }
 
         @Override
         public void receive() throws Exception {
@@ -48,7 +58,7 @@ public class RPCClient {
             // create request BasicProperties
             BasicProperties props = new BasicProperties();
             props.setCorrelationId(correlationId);
-            props.setReplyTo(replyQueueName);
+            props.setReplyTo(((Receiver) consumer).getReplyQueueName());
 
             channel.queueDeclare(RPC_QUEUE_NAME, false, false, false, null);
 
@@ -60,7 +70,7 @@ public class RPCClient {
     public RPCClient() throws Exception {
         // when this client is create, it creates an unique dynamic queue for this client, in order to receive
         // responds from server
-        Consumer consumer = new Receiver();
+        consumer = new Receiver();
         consumer.receive();
     }
 
@@ -78,7 +88,7 @@ public class RPCClient {
         // we need to create an infinite loop until receive the correct respond for this request
         while (true) {
             // sleep process flow until a response arrives
-            QueueingConsumer.Delivery delivery = queueConsumer.nextDelivery();
+            QueueingConsumer.Delivery delivery = ((Receiver) consumer).getQueueConsumer().nextDelivery();
 
             // if current response doesn't correspond with correlationId request, ignore it and wait for another
             if (delivery.getProperties().getCorrelationId().equals(correlationId)) {
