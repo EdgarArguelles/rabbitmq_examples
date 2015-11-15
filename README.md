@@ -37,9 +37,3 @@ Basic examples using RabbitMQ queues
       to a corresponding queue.
       (run an instance of Work1, Work2 and Work3 and then run one or more time an instance of Client to send request to
       a specific work or action)
-
-### run
-$ gradle run
-
-### build
-$ gradle build
