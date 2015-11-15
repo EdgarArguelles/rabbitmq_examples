@@ -8,17 +8,22 @@ import com.rabbitmq.client.ConnectionFactory;
  * Abstract class to allow to connect to RabbitMQ
  */
 public abstract class QueueManager {
+
     private static final ConnectionFactory factory;
     private static Connection connection;
     private static Channel channel;
 
-    // Queues name
+    // Queues and exchanges name
     public static final String QUEUE_HELLO_WORLD = "helloWorld";
     public static final String TASK_QUEUE_NAME = "task_queue";
     public static final String EXCHANGE_LOGS = "logs";
     public static final String EXCHANGE_DIRECT_LOGS = "direct_logs";
     public static final String EXCHANGE_TOPIC_LOGS = "topic_logs";
     public static final String RPC_QUEUE_NAME = "rpc_queue";
+    public static final String RPC_EXCHANGE = "direct_rpc";
+    public static final String RPC_QUEUE_ACTION1 = "rpc_action1";
+    public static final String RPC_QUEUE_ACTION2 = "rpc_action2";
+    public static final String RPC_QUEUE_ACTION3 = "rpc_action3";
 
     static {
         factory = new ConnectionFactory();

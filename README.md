@@ -31,6 +31,12 @@ Basic examples using RabbitMQ queues
       Run a function on a remote computer and wait for the result? Well, that's a different story. This pattern is
       commonly known as Remote Procedure Call or RPC.
       (run an instance of Server and then run one or more time an instance of Client to send request)
+* rpcSubscribe:
+      Similar than rpc example, but in this time there are 3 different activities en remote computer (server) and
+      each work has its own queue and the client use a exchange instead of a direct queue name to send the work
+      to a corresponding queue.
+      (run an instance of Work1, Work2 and Work3 and then run one or more time an instance of Client to send request to
+      a specific work or action)
 
 ### run
 $ gradle run
