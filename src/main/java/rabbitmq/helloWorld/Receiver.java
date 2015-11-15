@@ -24,7 +24,7 @@ public class Receiver extends Consumer {
 
     @Override
     public void receive() throws Exception {
-        // connect to server, create and get channel
+        // connect to server, create and/or get channel
         Channel channel = openChannel();
 
         // Note that we declare the queue here, as well. Because we might start the receiver before the sender,

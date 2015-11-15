@@ -30,7 +30,7 @@ Basic examples using RabbitMQ queues
 * rpc (http://www.rabbitmq.com/tutorials/tutorial-six-java.html):
       Run a function on a remote computer and wait for the result? Well, that's a different story. This pattern is
       commonly known as Remote Procedure Call or RPC.
-      (run an instance of each Receivers and then run Sender to send messages to server)
+      (run an instance of Server and then run one or more time an instance of Client to send request)
 
 ### run
 $ gradle run

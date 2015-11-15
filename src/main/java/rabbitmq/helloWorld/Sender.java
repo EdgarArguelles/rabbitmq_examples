@@ -30,7 +30,7 @@ public class Sender extends Producer {
 
     @Override
     public void send(String message, String routingKey) throws Exception {
-        // connect to server, create and get channel
+        // connect to server, create and/or get channel
         Channel channel = openChannel();
 
         // Next we create a channel, which is where most of the API for getting things done resides.

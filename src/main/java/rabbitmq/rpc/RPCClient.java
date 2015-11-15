@@ -2,75 +2,99 @@ package rabbitmq.rpc;
 
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
+import rabbitmq.Consumer;
+import rabbitmq.Producer;
 
 import java.util.UUID;
 
 public class RPCClient {
 
-    private Connection connection;
-    private Channel channel;
-    private String requestQueueName = "rpc_queue";
     private String replyQueueName;
-    private QueueingConsumer consumer;
+    private QueueingConsumer queueConsumer;
+
+    private class Receiver extends Consumer {
+
+        @Override
+        public void receive() throws Exception {
+            // connect to server, create and/or get channel
+            final Channel channel = openChannel();
+
+            // create a non-durable, exclusive, auto delete queue with a generated name for this client
+            replyQueueName = channel.queueDeclare().getQueue();
+
+            // client will stay waiting any server response using QueueingConsumer class to handle callbacks
+            queueConsumer = new QueueingConsumer(channel);
+
+            // the second parameter "true" called "autoAck", tells server should consider messages acknowledged once delivered
+            // that means once the message is delivered, the server will delete message from queue
+            channel.basicConsume(replyQueueName, true, queueConsumer);
+        }
+    }
+
+    private class Sender extends Producer {
+
+        private String correlationId;
+
+        public Sender(String correlationId) {
+            this.correlationId = correlationId;
+        }
+
+        @Override
+        public void send(String message, String routingKey) throws Exception {
+            // connect to server, create and/or get channel
+            Channel channel = openChannel();
+
+            // create request BasicProperties
+            BasicProperties props = new BasicProperties();
+            props.setCorrelationId(correlationId);
+            props.setReplyTo(replyQueueName);
+
+            // publish client request to "rpc_queue" queue sending an unique correlationId and a replayTo queue
+            channel.basicPublish("", RPC_QUEUE_NAME, props, message.getBytes("UTF-8"));
+        }
+    }
 
     public RPCClient() throws Exception {
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
-        connection = factory.newConnection();
-        channel = connection.createChannel();
-
-        replyQueueName = channel.queueDeclare().getQueue();
-        consumer = new QueueingConsumer(channel);
-        channel.basicConsume(replyQueueName, true, consumer);
+        // when this client is create, it creates an unique dynamic queue for this client, in order to receive
+        // responds from server
+        Consumer consumer = new Receiver();
+        consumer.receive();
     }
 
     public String call(String message) throws Exception {
-        String response = null;
-        String corrId = UUID.randomUUID().toString();
+        // create an unique correlationId for this request
+        String correlationId = UUID.randomUUID().toString();
 
-        BasicProperties props = new BasicProperties();
-        props.setCorrelationId(corrId);
-        props.setReplyTo(replyQueueName);
+        // create an queue producer and send request message to "rpc_queue" queue
+        Producer producer = new Sender(correlationId);
+        producer.send(message, null);
+        System.out.println(" [x] Awaiting RPC response");
 
-        channel.basicPublish("", requestQueueName, props, message.getBytes("UTF-8"));
-
+        // this client could receive all responses for different request, so we need to create an infinite loop
+        // until receive respond for this request
         while (true) {
-            QueueingConsumer.Delivery delivery = consumer.nextDelivery();
-            if (delivery.getProperties().getCorrelationId().equals(corrId)) {
-                response = new String(delivery.getBody(), "UTF-8");
-                break;
+            // sleep process flow until a response arrives
+            QueueingConsumer.Delivery delivery = queueConsumer.nextDelivery();
+
+            // if current response doesn't correspond with correlationId request, ignore it and wait for another
+            if (delivery.getProperties().getCorrelationId().equals(correlationId)) {
+                String response = new String(delivery.getBody(), "UTF-8");
+                producer.closeChannel();
+                return response;
             }
         }
-
-        return response;
-    }
-
-    public void close() throws Exception {
-        connection.close();
     }
 
     public static void main(String[] argv) {
-        RPCClient fibonacciRpc = null;
-        String response = null;
         try {
-            fibonacciRpc = new RPCClient();
-
+            RPCClient client = new RPCClient();
             int value = 6000;
             System.out.println(" [x] Requesting delay(" + value + ")");
-            response = fibonacciRpc.call("" + value);
+            String response = client.call("" + value);
             System.out.println(" [.] Server last '" + response + "' seconds.");
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (fibonacciRpc != null) {
-                try {
-                    fibonacciRpc.close();
-                } catch (Exception ignore) {
-                }
-            }
         }
     }
 }

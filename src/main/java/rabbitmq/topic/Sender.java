@@ -31,7 +31,7 @@ public class Sender extends Producer {
 
     @Override
     public void send(String message, String routingKey) throws Exception {
-        // connect to server, create and get channel
+        // connect to server, create and/or get channel
         Channel channel = openChannel();
 
         // create a exchange, an exchange is a very simple thing. On one side it receives messages
