@@ -27,6 +27,10 @@ Basic examples using RabbitMQ queues
       Make it possible to subscribe only to a subset of the messages, but using different criteria like severity and
       source
       (run an instance of each Receivers and then run Sender to send messages to server)
+* rpc (http://www.rabbitmq.com/tutorials/tutorial-six-java.html):
+      Run a function on a remote computer and wait for the result? Well, that's a different story. This pattern is
+      commonly known as Remote Procedure Call or RPC.
+      (run an instance of each Receivers and then run Sender to send messages to server)
 
 ### run
 $ gradle run
