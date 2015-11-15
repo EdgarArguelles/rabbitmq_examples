@@ -2,8 +2,6 @@ package rabbitmq.topic;
 
 import rabbitmq.Consumer;
 
-import java.io.IOException;
-
 /**
  * This consumer will receive orange animals messages.
  */
@@ -20,7 +18,7 @@ public class ReceiverOrange extends ReceiverAnimal {
             System.out.println("**************ORANGE MESSAGE*****************");
             Consumer consumer = new ReceiverOrange();
             consumer.receive();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

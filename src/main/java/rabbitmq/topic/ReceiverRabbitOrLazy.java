@@ -2,8 +2,6 @@ package rabbitmq.topic;
 
 import rabbitmq.Consumer;
 
-import java.io.IOException;
-
 /**
  * This consumer will receive Rabbit or Lazy animals messages.
  */
@@ -20,7 +18,7 @@ public class ReceiverRabbitOrLazy extends ReceiverAnimal {
             System.out.println("**************RABBIT or LAZY MESSAGE*****************");
             Consumer consumer = new ReceiverRabbitOrLazy();
             consumer.receive();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

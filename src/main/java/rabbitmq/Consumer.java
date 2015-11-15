@@ -3,8 +3,6 @@ package rabbitmq;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 
-import java.io.IOException;
-
 /**
  * Abstract class to receive messages from RabbitMQ
  */
@@ -19,19 +17,19 @@ public abstract class Consumer implements QueueManager {
     /**
      * receive a message form server
      *
-     * @throws IOException
+     * @throws Exception
      */
-    public abstract void receive() throws IOException;
+    public abstract void receive() throws Exception;
 
     @Override
-    public Channel openChannel() throws IOException {
+    public Channel openChannel() throws Exception {
         connection = factory.newConnection();
         channel = connection.createChannel();
         return channel;
     }
 
     @Override
-    public void closeChannel() throws IOException {
+    public void closeChannel() throws Exception {
         channel.close();
         connection.close();
     }

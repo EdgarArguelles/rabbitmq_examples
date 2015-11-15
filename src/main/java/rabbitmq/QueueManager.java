@@ -3,8 +3,6 @@ package rabbitmq;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConnectionFactory;
 
-import java.io.IOException;
-
 /**
  * Allow to connect to RabbitMQ
  */
@@ -23,14 +21,14 @@ public interface QueueManager {
      * Create and get a communication channel to server
      *
      * @return communication channel to server
-     * @throws IOException
+     * @throws Exception
      */
-    Channel openChannel() throws IOException;
+    Channel openChannel() throws Exception;
 
     /**
      * Close connection to server
      *
-     * @throws IOException
+     * @throws Exception
      */
-    void closeChannel() throws IOException;
+    void closeChannel() throws Exception;
 }

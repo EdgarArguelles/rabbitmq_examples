@@ -3,8 +3,6 @@ package rabbitmq.topic;
 import com.rabbitmq.client.Channel;
 import rabbitmq.Producer;
 
-import java.io.IOException;
-
 /**
  * The sender will connect to RabbitMQ, emits animals messages with routingKey to an exchange instead
  * of a specific queue, then exit.
@@ -26,13 +24,13 @@ public class Sender extends Producer {
             producer.send("Lost message 1", "quick.brown.fox");
             producer.send("Lost message 2", "orange");
             producer.send("Lost message 3", "quick.orange.male.rabbit");
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void send(String message, String routingKey) throws IOException {
+    public void send(String message, String routingKey) throws Exception {
         // connect to server, create and get channel
         Channel channel = openChannel();
 

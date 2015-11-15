@@ -3,8 +3,6 @@ package rabbitmq.publishSubscribe;
 import com.rabbitmq.client.Channel;
 import rabbitmq.Producer;
 
-import java.io.IOException;
-
 /**
  * The sender will connect to RabbitMQ, emits log messages to an exchange instead of a specific queue, then exit.
  */
@@ -19,13 +17,13 @@ public class Sender extends Producer {
             producer.send("message4", null);
             producer.send("message5", null);
             producer.send("message6", null);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void send(String message, String routingKey) throws IOException {
+    public void send(String message, String routingKey) throws Exception {
         // connect to server, create and get channel
         Channel channel = openChannel();
 

@@ -2,8 +2,6 @@ package rabbitmq.routing;
 
 import rabbitmq.Consumer;
 
-import java.io.IOException;
-
 /**
  * This consumer will receive all messages.
  */
@@ -18,7 +16,7 @@ public class ReceiverAll extends ReceiverLog {
             System.out.println("**************ALL MESSAGE*****************");
             Consumer consumer = new ReceiverAll();
             consumer.receive();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

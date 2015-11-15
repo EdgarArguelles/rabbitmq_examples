@@ -17,13 +17,13 @@ public class Receiver extends Consumer {
         try {
             Consumer consumer = new Receiver();
             consumer.receive();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void receive() throws IOException {
+    public void receive() throws Exception {
         // connect to server, create and get channel
         Channel channel = openChannel();
 

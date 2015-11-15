@@ -4,8 +4,6 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.MessageProperties;
 import rabbitmq.Producer;
 
-import java.io.IOException;
-
 /**
  * The sender will connect to RabbitMQ, send multiples messages to be catch by different Consumers one by one when they
  * are not busy, then exit.
@@ -21,13 +19,13 @@ public class Sender extends Producer {
             producer.send("6......", null);
             producer.send("3...", null);
             producer.send("2..", null);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void send(String message, String routingKey) throws IOException {
+    public void send(String message, String routingKey) throws Exception {
         // connect to server, create and get channel
         Channel channel = openChannel();
 

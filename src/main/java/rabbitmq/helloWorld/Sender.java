@@ -3,8 +3,6 @@ package rabbitmq.helloWorld;
 import com.rabbitmq.client.Channel;
 import rabbitmq.Producer;
 
-import java.io.IOException;
-
 /**
  * The sender will connect to RabbitMQ, send multiples messages, then exit.
  */
@@ -25,13 +23,13 @@ public class Sender extends Producer {
             producer.send("Hello World10!", null);
             producer.send("Hello World11!", null);
             producer.send("Hello World12!", null);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void send(String message, String routingKey) throws IOException {
+    public void send(String message, String routingKey) throws Exception {
         // connect to server, create and get channel
         Channel channel = openChannel();
 

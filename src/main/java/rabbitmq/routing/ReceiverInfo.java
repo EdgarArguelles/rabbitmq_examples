@@ -2,8 +2,6 @@ package rabbitmq.routing;
 
 import rabbitmq.Consumer;
 
-import java.io.IOException;
-
 /**
  * This consumer only will receive the info messages.
  */
@@ -18,7 +16,7 @@ public class ReceiverInfo extends ReceiverLog {
             System.out.println("**************INFO MESSAGE*****************");
             Consumer consumer = new ReceiverInfo();
             consumer.receive();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

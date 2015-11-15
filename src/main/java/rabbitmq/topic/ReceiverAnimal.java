@@ -20,7 +20,7 @@ public abstract class ReceiverAnimal extends Consumer {
     }
 
     @Override
-    public void receive() throws IOException {
+    public void receive() throws Exception {
         // connect to server, create and get channel
         final Channel channel = openChannel();
 
