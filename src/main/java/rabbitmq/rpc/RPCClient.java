@@ -32,7 +32,7 @@ public class RPCClient {
         @Override
         public void receive() throws Exception {
             // connect to server, create and/or get channel
-            final Channel channel = openChannel();
+            Channel channel = openChannel();
 
             // create a non-durable, exclusive, auto delete queue with a generated name for this client
             replyQueueName = channel.queueDeclare().getQueue();

@@ -22,7 +22,7 @@ public abstract class ReceiverAnimal extends Consumer {
     @Override
     public void receive() throws Exception {
         // connect to server, create and/or get channel
-        final Channel channel = openChannel();
+        Channel channel = openChannel();
 
         // connect to exchange
         channel.exchangeDeclare(EXCHANGE_TOPIC_LOGS, "topic");

@@ -25,7 +25,7 @@ public class RPCServer {
         @Override
         public void receive() throws Exception {
             // connect to server, create and/or get channel
-            final Channel channel = openChannel();
+            Channel channel = openChannel();
 
             // Server will listen rpc_queue for any client request
             channel.queueDeclare(RPC_QUEUE_NAME, false, false, false, null);
