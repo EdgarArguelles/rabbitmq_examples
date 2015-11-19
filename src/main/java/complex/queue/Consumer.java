@@ -28,4 +28,11 @@ public interface Consumer {
      * @throws Exception
      */
     void notifyAcknowledgement(long deliveryTag) throws Exception;
+
+    /**
+     * Close connection to server
+     *
+     * @throws Exception
+     */
+    void closeConection() throws Exception;
 }

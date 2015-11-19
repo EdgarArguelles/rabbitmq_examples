@@ -17,6 +17,7 @@ public class Client {
         // create an unique correlationId for this request
         String correlationId = UUID.randomUUID().toString();
         producer.send(msg, action, new Message(correlationId, ((ClientConsumer) consumer).getReplyQueueName()));
+        producer.closeConection();
         System.out.println("CLIENT waiting for server ...");
 
         // wait until server responds
@@ -26,6 +27,7 @@ public class Client {
 
             if (message.getCorrelationId().equals(correlationId)) {
                 String response = message.getBodyAsString();
+                consumer.closeConection();
                 return response;
             }
         }

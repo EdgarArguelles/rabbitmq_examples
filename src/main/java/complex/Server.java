@@ -8,10 +8,12 @@ import complex.queue.rabbitmq.server.ServerProducer;
 
 public class Server implements Runnable {
 
+    private Consumer consumer;
+
     @Override
     public void run() {
         try {
-            Consumer consumer = new ServerConsumer();
+            consumer = new ServerConsumer();
             consumer.startListening();
             System.out.println("SERVER Listening ... ");
 
@@ -32,6 +34,7 @@ public class Server implements Runnable {
                     Producer producer = new ServerProducer();
                     // send response to replayTo queue
                     producer.send(response, null, message);
+                    producer.closeConection();
                     // notify queue server that current message is completed
                     consumer.notifyAcknowledgement(message.getDeliveryTag());
                 }
@@ -44,5 +47,9 @@ public class Server implements Runnable {
         if (number < 1000) throw new Exception("value less than 1000");
         Thread.sleep(number);
         return number / 1000;
+    }
+
+    public void closeConection() throws Exception {
+        consumer.closeConection();
     }
 }

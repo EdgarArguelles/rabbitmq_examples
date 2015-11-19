@@ -3,14 +3,15 @@ package complex;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Thread server1 = new Thread(new Server());
-        server1.start();
+        Server server = new Server();
+        new Thread(server).start();
 
         Client client = new Client();
         int value = 4000;
         String response = client.call("" + value, "action");
-        System.out.println("The response was: " + response);
+        System.out.println("The server last " + response + " seconds");
 
+        server.closeConection();
         System.exit(0);
     }
 }

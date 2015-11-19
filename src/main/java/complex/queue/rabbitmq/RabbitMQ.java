@@ -10,8 +10,8 @@ import com.rabbitmq.client.ConnectionFactory;
 public abstract class RabbitMQ {
 
     private static final ConnectionFactory factory;
-    private static Connection connection;
-    private static Channel channel;
+    private Connection connection;
+    private Channel channel;
 
     public static final String RPC_EXCHANGE_NAME = "rpc_direct";
     public static final String RPC_EXCHANGE_TYPE = "direct";
@@ -27,7 +27,7 @@ public abstract class RabbitMQ {
      * @return communication channel to server
      * @throws Exception
      */
-    public synchronized Channel getChannel() throws Exception {
+    public Channel getChannel() throws Exception {
         if (connection == null || !connection.isOpen()) {
             connection = factory.newConnection();
         }
@@ -35,5 +35,19 @@ public abstract class RabbitMQ {
             channel = connection.createChannel();
         }
         return channel;
+    }
+
+    /**
+     * Close connection to server
+     *
+     * @throws Exception
+     */
+    public void closeConection() throws Exception {
+        if (channel != null && channel.isOpen()) {
+            channel.close();
+        }
+        if (connection != null && connection.isOpen()) {
+            connection.close();
+        }
     }
 }

@@ -14,4 +14,11 @@ public interface Producer {
      * @throws Exception
      */
     void send(String message, String routingKey, Message originalMessage) throws Exception;
+
+    /**
+     * Close connection to server
+     *
+     * @throws Exception
+     */
+    void closeConection() throws Exception;
 }
