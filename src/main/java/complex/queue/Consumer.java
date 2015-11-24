@@ -13,7 +13,7 @@ public interface Consumer {
     void startListening() throws Exception;
 
     /**
-     * get next avaliable queue message
+     * get next available queue message
      *
      * @return Message object representing a queue message
      * @throws Exception
